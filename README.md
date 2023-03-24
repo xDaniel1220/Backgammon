@@ -1,2 +1,2 @@
 # By1_Backgammon
-A ByOne Team Backgammon game developed in Python.
+Backgammon game by the ByOne™ Team, developed purely in the Python programming language.
