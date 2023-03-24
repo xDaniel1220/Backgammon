@@ -1,15 +1,24 @@
 import pygame
 
-def main():
+def main(): 
     pygame.init()
-    SCREEN = pygame.display.set_mode((640, 480))
+    screen = pygame.display.set_mode((1280, 720))
+    pygame.display.set_caption("Backgammon")
+    test = pygame.image.load("Assets/Board1.jpg")
 
-    while True:
+    test = pygame.transform.scale(test, (1280, 720))
+
+
+    running = True
+
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
+                running = False
 
-    SCREEN.fill((0, 255, 255))
-    pygame.display.flip()
+        pygame.display.flip()
+        screen.blit(test, (0, 0))
+
+    pygame.quit()
 
 main()
