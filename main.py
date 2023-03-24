@@ -1,38 +1,33 @@
-import random
+import pygame
 
-player1_score = 0
-player2_score = 0
-winning_score = 5
+# Inicializace Pygame
+pygame.init()
 
-def flip_coin():
-    return random.randint(0, 1)
+# Velikost okna
+window_width = 1360
+window_height = 781
 
-def player_turn(player, call):
-    result = flip_coin()
-    if result == call:
-        print(f"Player {player} got it right!")
-        return True
-    else:
-        print(f"Player {player} got it wrong.")
-        return False
+# Vytvoření herního okna
+game_display = pygame.display.set_mode((window_width, window_height))
 
-def print_score():
-    print(f"Player 1 score: {player1_score}")
-    print(f"Player 2 score: {player2_score}")
+# Nastavení titulku okna
+pygame.display.set_caption('Herní okno')
 
-def check_win():
-    if player1_score >= winning_score:
-        return 1
-    elif player2_score >= winning_score:
-        return 2
-    else:
-        return 0
+# Pozadí hry
+#background_color = (255, 255, 255)
+background = pygame.image.load("assets/images/board.png")
 
+# Hlavní smyčka hry
 while True:
-    print_score()
-    winner = check_win()
-    if winner != 0:
-        print(f"Player {winner} wins!")
-        break
-    
-    print("Player 1, heads or tails?")
+    # Zpracování událostí
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+
+    # Vykreslení pozadí
+    #game_display.fill(background_color)
+    game_display.blit(background, (0,0))
+
+    # Obnova okna
+    pygame.display.update()
