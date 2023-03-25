@@ -63,6 +63,11 @@ class Game:
         roll_button_height = roll_button_scaled.get_height()
         roll_button_area = pygame.Rect(center_x - 15, 35, roll_button_width, roll_button_height)
 
+        #Generate a new player
+        self.playerOne = Player("Johny", 1)
+
+        self.movingChecker = False
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -78,11 +83,21 @@ class Game:
                     self.diceImage1 = pygame.transform.scale(self.diceImage1, (50, 50))
                     self.diceImage2 = pygame.transform.scale(self.diceImage2, (50, 50))
 
+                    if self.playerOne.checkerRect.collidepoint(event.pos):
+                        if self.movingChecker == True:
+                            self.movingChecker = False
+                        elif self.movingChecker == False:
+                            self.movingChecker = True
+
+                elif event.type == pygame.MOUSEMOTION and self.movingChecker:
+                    self.playerOne.checkerRect.move_ip(event.rel)
+
             pygame.display.flip()
             window.fill(background_color)
             window.blit(board_scaled, (board_x, board_y))
             window.blit(self.diceImage1, (center_x - 60, 35))
             window.blit(self.diceImage2, (center_x + 10, 35))
+            window.blit(self.playerOne.checker, (self.playerOne.checkerRect))
 
             pygame.display.update()
 
@@ -95,6 +110,35 @@ class Game:
 
 def roll_dice():
     return random.randint(1, 6)
+
+class Player:
+
+    def __init__(self, name, startingSide):
+        self.name = name
+        self.startingSide = startingSide
+        self.checkers = 15
+        self.currentChecker = 0
+        self.canPlay = False
+        self.initChecker()
+        
+
+    def initChecker(self):
+        self.checker = pygame.image.load("Assets/images/blackPiece.png" if self.startingSide == 1 else "Assets/images/whitePiece.png")
+        self.checkerRect = self.checker.get_rect()
+        self.checkerRect.move_ip(977, 115)
+        self.checkerOff = pygame.image.load("Assets/images/blackOff.png" if self.startingSide == 1 else "Assets/images/whiteOff.png")
+    
+    def getCheckers(self):
+        return self.checkers
+    
+    def getCurrentChecker(self):
+        return self.currentChecker
+    
+    def canPlay(self):
+        return self.canPlay
+    
+    def setCanPlay(self, bool):
+        self.canPlay = bool
 
 
 game = Game()
