@@ -33,8 +33,8 @@ class Game:
         self.font = pygame.font.Font(pygame.font.get_default_font(), 36)
 
         #Generate a new player
-        self.playerOne = Player("Daniel", "W")
-        self.playerTwo = Player("Johny", "B")
+        self.playerOne = Player("Player 1", "W")
+        self.playerTwo = Player("Player 2", "B")
 
     #Render method
     def onRender(self):
@@ -43,7 +43,7 @@ class Game:
         self.dice1.renderDice(self.window, self.centerX, -60, 25)
         self.dice2.renderDice(self.window, self.centerX, 10, 25)
         self.playerOne.drawPieces(self.window)
-        self.playerTwo.drawPieces(self.window)
+        self.playerTwo.drawPieces(self.window) 
         pygame.display.update()
 
 

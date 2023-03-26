@@ -21,46 +21,30 @@ class Player:
         self.instances = []
 
         while True:
-            if self.pieces < 2 and self.color == "B":
+            if self.pieces < 2:
                 for i in range(2):
-                    instance = Piece(960, 600 + (i * -55), self.getImagePath())
+                    instance = Piece(960, (100 if self.color == "W" else 600) + 
+                    (i * (55 if self.color == "W" else -55)), self.getImagePath())
                     self.instances.append(instance)
                     self.pieces += 1
-            elif self.pieces >= 2 and self.pieces < 7 and self.color == "B":
+            elif self.pieces >= 2 and self.pieces < 7:
                 for i in range(5):
-                    instance = Piece(156, 600 + (i * -55), self.getImagePath())
+                    instance = Piece(156, (100 if self.color == "W" else 600) +
+                    (i * (55 if self.color == "W" else -55)), self.getImagePath())
                     self.instances.append(instance)
                     self.pieces += 1
-            elif self.pieces >= 7 and self.pieces < 10 and self.color == "B":
+            elif self.pieces >= 7 and self.pieces < 10:
                 for i in range(3):
-                    instance = Piece(503, 100 + (i * 55), self.getImagePath())
+                    instance = Piece(503, (100 if self.color == "W" else 600) +
+                    (i * (55 if self.color == "W" else -55)), self.getImagePath())
                     self.instances.append(instance)
                     self.pieces += 1
-            elif self.pieces >= 10 and self.pieces < 15 and self.color == "B":
+            elif self.pieces >= 10 and self.pieces < 15:
                 for i in range(5):
-                    instance = Piece(612, 100 + (i * 55), self.getImagePath())
+                    instance = Piece(612, (100 if self.color == "W" else 600) +
+                    (i * (55 if self.color == "W" else -55)), self.getImagePath())
                     self.instances.append(instance)
                     self.pieces += 1
-            elif self.pieces < 2 and self.color == "W":
-                for i in range(2):
-                    instance = Piece(960, 100 + (i * 55), self.getImagePath())
-                    self.instances.append(instance)
-                    self.pieces += 1
-            elif self.pieces >= 2 and self.pieces < 7 and self.color == "W":
-                for i in range(5):
-                    instance = Piece(156, 100 + (i * 55), self.getImagePath())
-                    self.instances.append(instance)
-                    self.pieces += 1
-            elif self.pieces >= 7 and self.pieces < 10 and self.color == "W":
-                for i in range(3):
-                    instance = Piece(503, 600 + (i * -55), self.getImagePath())
-                    self.instances.append(instance)
-                    self.pieces += 1
-            elif self.pieces >= 10 and self.pieces < 15 and self.color == "W":
-                for i in range(5):
-                    instance = Piece(612, 600 + (i * -55), self.getImagePath())
-                    self.instances.append(instance)
-                    self.pieces += 1 
             else:
                 break
                 
@@ -69,27 +53,6 @@ class Player:
             return "assets/images/blackPiece.png"
         else:
             return "assets/images/whitePiece.png"
-        
-    #Tohle pico nejde protože nemůžu return formatted "i" mimo for loop :)))))
-    """
-    def getPiecePos(self):
-        if self.color == "B" and self.pieces < 2:
-            return f"{960, 600 + (i * -55)}"
-        elif self.color == "B" and self.pieces >= 2 and self.pieces < 7:
-            return f"{156, 600 + (i * -55)}"
-        elif self.color == "B" and self.pieces >= 7 and self.pieces < 10:
-            return f"{503, 100 + (i * 55)}"
-        elif self.color == "B" and self.pieces >= 10 and self.pieces < 15:
-            return f"{612, 100 + (i * 55)}"
-        elif self.color == "W" and self.pieces < 2:
-            return f"{960, 100 + (i * 55)}"
-        elif self.color == "W" and self.pieces >= 2 and self.pieces < 7:
-            return f"{156, 100 + (i * 55)}"
-        elif self.color == "W" and self.pieces >= 7 and self.pieces < 10:
-            return f"{503, 600 + (i * -55)}"
-        elif self.color == "W" and self.pieces >= 10 and self.pieces < 15:
-            return f"{612, 600 + (i * -55)}"
-    """
 
     #Render the piece on the screen
     def drawPieces(self, surface):
