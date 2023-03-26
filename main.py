@@ -8,6 +8,8 @@ class Game:
         #Initialize pygame library
         pygame.init()
 
+        self.players = []
+
         # Playing field creation
         self.board = pygame.transform.scale(pygame.image.load('Assets/images/board.png'), (1000, 600))
 
@@ -36,22 +38,29 @@ class Game:
         self.playerOne = Player("Johny", 0)
         self.playerTwo = Player("Daniel", 1)
 
+        #Add players into a list
+        self.players.append(self.playerOne)
+        self.players.append(self.playerTwo)
+
     #Render method
     def onRender(self):
         self.window.fill(self.backgroundColor)
         self.window.blit(self.board, (self.boardX, self.boardY))
         self.dice1.renderDice(self.window, self.centerX, -60, 25)
         self.dice2.renderDice(self.window, self.centerX, 10, 25)
-        self.playerOne.drawPieces(self.window, self.font)
-        self.playerTwo.drawPieces(self.window, self.font)
+
+        for player in self.players:
+            player.drawPieces(self.window, self.font)
+        
         pygame.display.update()
 
     def onExecute(self):
         while True:
             for event in pygame.event.get():
                 #Event Handler implementation
-                self.playerOne.handleInput(event)
-                self.playerTwo.handleInput(event)
+                for player in self.players:
+                    player.handleInput(event)
+                
                 self.dice1.handleInpput(event)
                 self.dice2.handleInpput(event)
 
