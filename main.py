@@ -1,145 +1,67 @@
 import pygame
 import random
-
-class Dice:
-    def __init__(self):
-        self.dices = [pygame.image.load("Assets/images/Dices/dice1.png"),
-                      pygame.image.load("Assets/images/Dices/dice2.png"),
-                      pygame.image.load("Assets/images/Dices/dice3.png"),
-                      pygame.image.load("Assets/images/Dices/dice4.png"),
-                      pygame.image.load("Assets/images/Dices/dice5-2.png"),
-                      pygame.image.load("Assets/images/Dices/dice6.png")]
-        self.currentDice = 0
-
-    def setCurrentDice(self, value):
-        self.currentDice = value
-
-    def getCurrentDice(self):
-        return self.currentDice
-
-    def getCurrentDiceImage(self):
-        return self.dices[self.currentDice - 1]
-
-    def printDices(self):
-        print(len(self.dices))
+from dice import Dice
+from player import Player
 
 class Game:
 
-    def init(self):
+    def __init__(self):
         #Initialize pygame library
         pygame.init()
 
         # Playing field creation
-        board = pygame.image.load('Assets/images/board.png')
-        board_scaled = pygame.transform.scale(board, (1000, 600))
+        self.board = pygame.image.load('Assets/images/board.png')
+        self.boardScaled = pygame.transform.scale(self.board, (1000, 600))
 
         #Initialize Two Dices
         self.dice1 = Dice()
         self.dice2 = Dice()
-        self.initialiteDiceImages()
 
         # Window setup
-        window_width = board.get_width() - (board.get_width() / 2.5)
-        window_height = board.get_height() - (board.get_width() / 5.5)
+        self.windowWidth = self.board.get_width() - (self.board.get_width() / 2.5)
+        self.windowHeight = self.board.get_height() - (self.board.get_width() / 5.5)
 
-        window = pygame.display.set_mode((window_width, window_height))
+        self.window = pygame.display.set_mode((self.windowWidth, self.windowHeight))
         pygame.display.set_caption('Backgammon')
-        background_color = (71, 71, 71)
+        self.background_color = (71, 71, 71)
 
         # Window center calculation
-        center_x = window_width // 2
-        center_y = window_height // 2
+        self.centerX = self.windowWidth // 2
+        self.centerY = self.windowHeight // 2
 
-        board_x = center_x - board_scaled.get_width() // 2
-        board_y = center_y - board_scaled.get_height() // 2
+        self.board_x = self.centerX - self.boardScaled.get_width() // 2
+        self.board_y = self.centerY - self.boardScaled.get_height() // 2
 
-        font = pygame.font.Font(None, 36)
-        dice1_output = font.render(str(roll_dice()), True, (255, 255, 255))
-        dice2_output = font.render(str(roll_dice()), True, (255, 255, 255))
-
-        roll_button = pygame.image.load('Assets/images/Dices/dice5.png')
-        roll_button_scaled = pygame.transform.scale(roll_button, (30, 30))
-        roll_button_width = roll_button_scaled.get_width()
-        roll_button_height = roll_button_scaled.get_height()
-        roll_button_area = pygame.Rect(center_x - 15, 35, roll_button_width, roll_button_height)
+        self.font = pygame.font.Font(pygame.font.get_default_font(), 36)
 
         #Generate a new player
         self.playerOne = Player("Johny", 1)
 
-        self.movingChecker = False
+    #Render method
+    def onRender(self):
+        self.window.fill(self.background_color)
+        self.window.blit(self.boardScaled, (self.board_x, self.board_y))
+        self.dice1.renderDice(self.window, self.centerX, -60, 35)
+        self.dice2.renderDice(self.window, self.centerX, 10, 35)
+        self.playerOne.drawPiece(self.window)
+        pygame.display.update()
 
+
+
+    def onExecute(self):
         while True:
             for event in pygame.event.get():
+                #Event Handler implementation
+                self.playerOne.handleInput(event)
+                self.dice1.handleInpput(event)
+                self.dice2.handleInpput(event)
+
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    quit()
 
-                if event.type == pygame.MOUSEBUTTONUP:
-                    self.dice1.setCurrentDice(roll_dice())
-                    self.dice2.setCurrentDice(roll_dice())
-                    self.diceImage1 = self.dice1.getCurrentDiceImage()
-                    self.diceImage2 = self.dice2.getCurrentDiceImage()
+            #Run the render method
+            self.onRender()
 
-                    self.diceImage1 = pygame.transform.scale(self.diceImage1, (50, 50))
-                    self.diceImage2 = pygame.transform.scale(self.diceImage2, (50, 50))
-
-                    if self.playerOne.checkerRect.collidepoint(event.pos):
-                        if self.movingChecker == True:
-                            self.movingChecker = False
-                        elif self.movingChecker == False:
-                            self.movingChecker = True
-
-                elif event.type == pygame.MOUSEMOTION and self.movingChecker:
-                    self.playerOne.checkerRect.move_ip(event.rel)
-
-            pygame.display.flip()
-            window.fill(background_color)
-            window.blit(board_scaled, (board_x, board_y))
-            window.blit(self.diceImage1, (center_x - 60, 35))
-            window.blit(self.diceImage2, (center_x + 10, 35))
-            window.blit(self.playerOne.checker, (self.playerOne.checkerRect))
-
-            pygame.display.update()
-
-    def initialiteDiceImages(self):
-        self.diceImage1 = self.dice1.getCurrentDiceImage()
-        self.diceImage2 = self.dice2.getCurrentDiceImage()
-
-        self.diceImage1 = pygame.transform.scale(self.diceImage1, (50, 50))
-        self.diceImage2 = pygame.transform.scale(self.diceImage2, (50, 50))
-
-def roll_dice():
-    return random.randint(1, 6)
-
-class Player:
-
-    def __init__(self, name, startingSide):
-        self.name = name
-        self.startingSide = startingSide
-        self.checkers = 15
-        self.currentChecker = 0
-        self.canPlay = False
-        self.initChecker()
-        
-
-    def initChecker(self):
-        self.checker = pygame.image.load("Assets/images/blackPiece.png" if self.startingSide == 1 else "Assets/images/whitePiece.png")
-        self.checkerRect = self.checker.get_rect()
-        self.checkerRect.move_ip(977, 115)
-        self.checkerOff = pygame.image.load("Assets/images/blackOff.png" if self.startingSide == 1 else "Assets/images/whiteOff.png")
-    
-    def getCheckers(self):
-        return self.checkers
-    
-    def getCurrentChecker(self):
-        return self.currentChecker
-    
-    def canPlay(self):
-        return self.canPlay
-    
-    def setCanPlay(self, bool):
-        self.canPlay = bool
-
-
-game = Game()
-game.init()
+if __name__ == "__main__":
+    game = Game()
+    game.onExecute()
