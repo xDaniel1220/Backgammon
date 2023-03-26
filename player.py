@@ -1,4 +1,5 @@
 import pygame
+from piece import Piece
 
 class Player:
 
@@ -20,7 +21,7 @@ class Player:
         self.instances = []
 
         for i in range(self.pieces):
-            instance = self.Piece(977, 115 + (i * 35), "Assets/images/blackPiece.png")
+            instance = Piece(977, 115 + (i * 35), "Assets/images/blackPiece.png")
             self.instances.append(instance)
 
     #Render the piece on the screen
