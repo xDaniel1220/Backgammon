@@ -33,7 +33,8 @@ class Game:
         self.font = pygame.font.Font(pygame.font.get_default_font(), 36)
 
         #Generate a new player
-        self.playerOne = Player("Johny", 1)
+        self.playerOne = Player("Daniel", "W")
+        self.playerTwo = Player("Johny", "B")
 
     #Render method
     def onRender(self):
@@ -42,6 +43,7 @@ class Game:
         self.dice1.renderDice(self.window, self.centerX, -60, 25)
         self.dice2.renderDice(self.window, self.centerX, 10, 25)
         self.playerOne.drawPieces(self.window)
+        self.playerTwo.drawPieces(self.window)
         pygame.display.update()
 
 
@@ -51,6 +53,7 @@ class Game:
             for event in pygame.event.get():
                 #Event Handler implementation
                 self.playerOne.handleInput(event)
+                self.playerTwo.handleInput(event)
                 self.dice1.handleInpput(event)
                 self.dice2.handleInpput(event)
 

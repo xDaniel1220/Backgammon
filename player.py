@@ -4,15 +4,14 @@ from piece import Piece
 class Player:
 
     #Initating Player
-    def __init__(self, name, startingSide):
+    def __init__(self, name, color):
         self.name = name
 
-        #Variable to determine which side the player is on (0 or 1)
-        self.startingSide = startingSide
+        #Variable to determine which side the player is on (B or W)
+        self.color = color
 
         #Number of max pieces a player can have
         self.pieces = 0
-        self.pieces2 = 0
         self.currentPiece = 0
 
         #TODO: Fix player turns
@@ -22,53 +21,76 @@ class Player:
         self.instances = []
 
         while True:
-            if self.pieces < 2:
+            if self.pieces < 2 and self.color == "B":
                 for i in range(2):
-                    instance = Piece(960, 600 + (i * -55), "Assets/images/blackPiece.png")
+                    instance = Piece(960, 600 + (i * -55), self.getImagePath())
                     self.instances.append(instance)
                     self.pieces += 1
-            elif self.pieces >= 2 and self.pieces < 7:
+            elif self.pieces >= 2 and self.pieces < 7 and self.color == "B":
                 for i in range(5):
-                    instance = Piece(156, 600 + (i * -55), "Assets/images/blackPiece.png")
+                    instance = Piece(156, 600 + (i * -55), self.getImagePath())
                     self.instances.append(instance)
                     self.pieces += 1
-            elif self.pieces >= 7 and self.pieces < 10:
+            elif self.pieces >= 7 and self.pieces < 10 and self.color == "B":
                 for i in range(3):
-                    instance = Piece(503, 100 + (i * 55), "Assets/images/blackPiece.png")
+                    instance = Piece(503, 100 + (i * 55), self.getImagePath())
                     self.instances.append(instance)
                     self.pieces += 1
-            elif self.pieces >= 10 and self.pieces < 15:
+            elif self.pieces >= 10 and self.pieces < 15 and self.color == "B":
                 for i in range(5):
-                    instance = Piece(612, 100 + (i * 55), "Assets/images/blackPiece.png")
+                    instance = Piece(612, 100 + (i * 55), self.getImagePath())
+                    self.instances.append(instance)
+                    self.pieces += 1
+            elif self.pieces < 2 and self.color == "W":
+                for i in range(2):
+                    instance = Piece(960, 100 + (i * 55), self.getImagePath())
+                    self.instances.append(instance)
+                    self.pieces += 1
+            elif self.pieces >= 2 and self.pieces < 7 and self.color == "W":
+                for i in range(5):
+                    instance = Piece(156, 100 + (i * 55), self.getImagePath())
+                    self.instances.append(instance)
+                    self.pieces += 1
+            elif self.pieces >= 7 and self.pieces < 10 and self.color == "W":
+                for i in range(3):
+                    instance = Piece(503, 600 + (i * -55), self.getImagePath())
+                    self.instances.append(instance)
+                    self.pieces += 1
+            elif self.pieces >= 10 and self.pieces < 15 and self.color == "W":
+                for i in range(5):
+                    instance = Piece(612, 600 + (i * -55), self.getImagePath())
                     self.instances.append(instance)
                     self.pieces += 1 
             else:
                 break
-            
-        while True:
-            if self.pieces2 < 2:
-                for i in range(2):
-                    instance = Piece(960, 100 + (i * 55), "Assets/images/whitePiece.png")
-                    self.instances.append(instance)
-                    self.pieces2 += 1
-            elif self.pieces2 >= 2 and self.pieces2 < 7:
-                for i in range(5):
-                    instance = Piece(156, 100 + (i * 55), "Assets/images/whitePiece.png")
-                    self.instances.append(instance)
-                    self.pieces2 += 1
-            elif self.pieces2 >= 7 and self.pieces2 < 10:
-                for i in range(3):
-                    instance = Piece(503, 600 + (i * -55), "Assets/images/whitePiece.png")
-                    self.instances.append(instance)
-                    self.pieces2 += 1
-            elif self.pieces2 >= 10 and self.pieces2 < 15:
-                for i in range(5):
-                    instance = Piece(612, 600 + (i * -55), "Assets/images/whitePiece.png")
-                    self.instances.append(instance)
-                    self.pieces2 += 1 
-            else:  
-                break
                 
+    def getImagePath(self):
+        if self.color == "B":
+            return "assets/images/blackPiece.png"
+        else:
+            return "assets/images/whitePiece.png"
+        
+    #Tohle pico nejde protože nemůžu return formatted "i" mimo for loop :)))))
+    """
+    def getPiecePos(self):
+        if self.color == "B" and self.pieces < 2:
+            return f"{960, 600 + (i * -55)}"
+        elif self.color == "B" and self.pieces >= 2 and self.pieces < 7:
+            return f"{156, 600 + (i * -55)}"
+        elif self.color == "B" and self.pieces >= 7 and self.pieces < 10:
+            return f"{503, 100 + (i * 55)}"
+        elif self.color == "B" and self.pieces >= 10 and self.pieces < 15:
+            return f"{612, 100 + (i * 55)}"
+        elif self.color == "W" and self.pieces < 2:
+            return f"{960, 100 + (i * 55)}"
+        elif self.color == "W" and self.pieces >= 2 and self.pieces < 7:
+            return f"{156, 100 + (i * 55)}"
+        elif self.color == "W" and self.pieces >= 7 and self.pieces < 10:
+            return f"{503, 600 + (i * -55)}"
+        elif self.color == "W" and self.pieces >= 10 and self.pieces < 15:
+            return f"{612, 600 + (i * -55)}"
+    """
+
     #Render the piece on the screen
     def drawPieces(self, surface):
         for instance in self.instances:
