@@ -1,4 +1,5 @@
 import pygame
+from piece import Piece
 
 class Player:
 
@@ -20,7 +21,7 @@ class Player:
         self.instances = []
 
         for i in range(self.pieces):
-            instance = self.Piece(977, 115 + (i * 35), "Assets/images/blackPiece.png")
+            instance = Piece(977, 115 + (i * 35), "Assets/images/blackPiece.png")
             self.instances.append(instance)
 
     #Render the piece on the screen
@@ -50,18 +51,3 @@ class Player:
             for instance in self.instances:
                 if instance.clicked:
                     instance.rect.move_ip(event.rel)
-    
-    class Piece:
-        def __init__(self, x, y, imagePath):
-            self.image = pygame.image.load(imagePath)
-            self.rect = self.image.get_rect()
-            self.rect.move_ip(x, y)
-            self.clicked = False
-
-        #Check whether the player clicked on a piece
-        def checkClick(self, mousePos):
-            if self.rect.collidepoint(mousePos):
-                if self.clicked == True:
-                    self.clicked = False
-                elif self.clicked == False:
-                    self.clicked = True
