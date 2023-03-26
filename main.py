@@ -45,8 +45,6 @@ class Game:
         self.playerOne.drawPiece(self.window)
         pygame.display.update()
 
-
-
     def onExecute(self):
         while True:
             for event in pygame.event.get():
@@ -61,6 +59,7 @@ class Game:
             #Run the render method
             self.onRender()
 
+#Run the game
 if __name__ == "__main__":
     game = Game()
     game.onExecute()
