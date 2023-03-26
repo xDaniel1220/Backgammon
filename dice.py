@@ -4,28 +4,25 @@ import random
 class Dice:
     def __init__(self):
         #Loading all the dice assets and storing them into a List
-        self.dices = [pygame.image.load("Assets/images/Dices/dice1.png"),
-                      pygame.image.load("Assets/images/Dices/dice2.png"),
-                      pygame.image.load("Assets/images/Dices/dice3.png"),
-                      pygame.image.load("Assets/images/Dices/dice4.png"),
-                      pygame.image.load("Assets/images/Dices/dice5-2.png"),
-                      pygame.image.load("Assets/images/Dices/dice6.png")]
+        self.dices = [pygame.image.load("Assets/images/dice1.png"),
+                      pygame.image.load("Assets/images/dice2.png"),
+                      pygame.image.load("Assets/images/dice3.png"),
+                      pygame.image.load("Assets/images/dice4.png"),
+                      pygame.image.load("Assets/images/dice5.png"),
+                      pygame.image.load("Assets/images/dice6.png")]
         
         #Variable to store the dices number
         self.currentDice = 0
-        self.diceImage = self.getCurrentDiceImage()
-        self.diceImage = pygame.transform.scale(self.diceImage, (50, 50))
+        self.diceImage = pygame.transform.scale(self.getCurrentDiceImage(), (50, 50))
 
     #Event Implementation
     def handleInpput(self, event):
         if event.type == pygame.MOUSEBUTTONUP:
-                    self.setCurrentDice(self.roll_dice())
-                    self.diceImage = self.getCurrentDiceImage()
-
-                    self.diceImage = pygame.transform.scale(self.diceImage, (50, 50))
+                    self.setCurrentDice(self.rollDice())
+                    self.diceImage = pygame.transform.scale(self.getCurrentDiceImage(), (50, 50))
 
     #Random generated number in range 1-6
-    def roll_dice(self):
+    def rollDice(self):
         return random.randint(1, 6)
 
     #Render method to render the dice
