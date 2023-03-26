@@ -2,7 +2,7 @@ import pygame
 
 class Piece:
     def __init__(self, x, y, imagePath):
-        self.image = pygame.image.load(imagePath)
+        self.image = pygame.transform.scale(pygame.image.load(imagePath), (75, 75))
         self.rect = self.image.get_rect()
         self.rect.move_ip(x, y)
         self.clicked = False

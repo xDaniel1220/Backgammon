@@ -41,7 +41,7 @@ class Game:
         self.window.blit(self.board, (self.boardX, self.boardY))
         self.dice1.renderDice(self.window, self.centerX, -60, 25)
         self.dice2.renderDice(self.window, self.centerX, 10, 25)
-        self.playerOne.drawPiece(self.window)
+        self.playerOne.drawPieces(self.window)
         pygame.display.update()
 
 
