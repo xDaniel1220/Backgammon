@@ -1,68 +1,66 @@
 import pygame
-import random
+from dice import Dice
+from player import Player
 
-# Inicializace Pygame
-pygame.init()
+class Game:
 
-def roll_dice():
-  return random.randint(1, 6)
+    def __init__(self):
+        #Initialize pygame library
+        pygame.init()
 
-# Vytvoření hrací plochy
-board = pygame.image.load('assets/images/board.png')
-board_scaled = pygame.transform.scale(board, (1000, 600))
+        # Playing field creation
+        self.board = pygame.image.load('Assets/images/board.png')
+        self.boardScaled = pygame.transform.scale(self.board, (1000, 600))
 
-# Velikost herního okna
-window_width = board.get_width() - (board.get_width() / 2.5)
-window_height = board.get_height() - (board.get_width() / 5.5)
+        #Initialize Two Dices
+        self.dice1 = Dice()
+        self.dice2 = Dice()
 
-# Vytvoření herního okna
-window = pygame.display.set_mode((window_width, window_height))
+        # Window setup
+        self.windowWidth = self.board.get_width() - (self.board.get_width() / 2.5)
+        self.windowHeight = self.board.get_height() - (self.board.get_width() / 5.5)
 
-# Nastavení titulku okna
-pygame.display.set_caption('Backgammon')
+        self.window = pygame.display.set_mode((self.windowWidth, self.windowHeight))
+        pygame.display.set_caption('Backgammon')
+        self.background_color = (71, 71, 71)
 
-# Barva pozadí herního okna
-background_color = (71, 71, 71)
+        # Window center calculation
+        self.centerX = self.windowWidth // 2
+        self.centerY = self.windowHeight // 2
 
-# Kalkulace centru okna
-center_x = window_width // 2
-center_y = window_height // 2
+        self.board_x = self.centerX - self.boardScaled.get_width() // 2
+        self.board_y = self.centerY - self.boardScaled.get_height() // 2
 
-# Kalkulace centru hrací plochy
-board_x = center_x - board_scaled.get_width() // 2
-board_y = center_y - board_scaled.get_height() // 2
+        self.font = pygame.font.Font(pygame.font.get_default_font(), 36)
 
-# Vytvoření dvou vrácených hodnot z hodu kostkou
-font = pygame.font.Font(None, 36)
-dice1_output = font.render(str(roll_dice()), True, (255, 255, 255))
-dice2_output = font.render(str(roll_dice()), True, (255, 255, 255))
+        #Generate a new player
+        self.playerOne = Player("Johny", 1)
 
-roll_button = pygame.image.load('assets/images/dice5.png')
-roll_button_scaled = pygame.transform.scale(roll_button, (30, 30))
-roll_button_width = roll_button_scaled.get_width()
-roll_button_height = roll_button_scaled.get_height()
-roll_button_area = pygame.Rect(center_x - 15, 35, roll_button_width, roll_button_height)
+    #Render method
+    def onRender(self):
+        self.window.fill(self.background_color)
+        self.window.blit(self.boardScaled, (self.board_x, self.board_y))
+        self.dice1.renderDice(self.window, self.centerX, -60, 35)
+        self.dice2.renderDice(self.window, self.centerX, 10, 35)
+        self.playerOne.drawPiece(self.window)
+        pygame.display.update()
 
-# Hlavní smyčka hry
-while True:
-    # Zpracování událostí
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:  # Left mouse button
-                if roll_button_area.collidepoint(event.pos):
-                    dice1_output = font.render(str(roll_dice()), True, (255, 255, 255))
-                    dice2_output = font.render(str(roll_dice()), True, (255, 255, 255))
 
-    # Vykreslení objektů do okna
-    window.fill(background_color)
-    window.blit(board_scaled, (board_x, board_y))
-    window.blit(dice1_output, (center_x - 60, 40))
-    window.blit(dice2_output, (center_x + 50, 40))
-    window.blit(roll_button_scaled, roll_button_area)
+    def onExecute(self):
+        while True:
+            for event in pygame.event.get():
+                #Event Handler implementation
+                self.playerOne.handleInput(event)
+                self.dice1.handleInpput(event)
+                self.dice2.handleInpput(event)
 
-    # Obnova okna
-    pygame.display.update()
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+
+            #Run the render method
+            self.onRender()
+
+if __name__ == "__main__":
+    game = Game()
+    game.onExecute()
