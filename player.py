@@ -12,7 +12,6 @@ class Player:
 
         #Number of max pieces a player can have
         self.pieces = 0
-        self.pieces2 = 0
         self.currentPiece = 0
 
         #TODO: Fix player turns
